@@ -36,12 +36,12 @@ bedrock.events.on('bedrock-cli.ready', callback => {
 });
 
 // only run application on HTTP port
-bedrock.events.on('bedrock-express.ready', function(app) {
-  // attach express to regular http
-  require('bedrock-server').servers.http.on('request', app);
-  // cancel default behavior of attaching to HTTPS
-  return false;
-});
+// bedrock.events.on('bedrock-express.ready', function(app) {
+//   // attach express to regular http
+//   require('bedrock-server').servers.http.on('request', app);
+//   // cancel default behavior of attaching to HTTPS
+//   return false;
+// });
 
 bedrock.events.on('bedrock-express.configure.routes', app => {
   const routes = config['http-bench'].routes;
