@@ -4,6 +4,7 @@
 'use strict';
 
 const autocannon = require('autocannon');
+let connection = 0;
 
 const operation = {
   // '@context': constants.WEB_LEDGER_CONTEXT_V1_URL,
@@ -39,11 +40,21 @@ const operation = {
 autocannon({
   // url: 'https://bedrock.local:18443/post1',
   body: JSON.stringify(operation),
+  headers: {
+    'Content-Type': 'application/json'
+  },
   url: 'https://ip-172-31-23-152.ec2.internal:18443/post1',
   // url: 'http://bedrock.local:18080/post1',
-  // url: 'https://bedrock.local:18443/post1',
+  url: 'https://bedrock.local:18443/post1',
   method: 'POST',
   connections: 20, //default
   pipelining: 1, // default
-  duration: 10 // default
+  duration: 10, // default
+  // setupClient: setupClient
 }, console.log);
+
+function setupClient(client) {
+  // console.log('CCCCCCCC', client.setBody);
+  connection++;
+  client.setBody(JSON.stringify({matt: 1}));
+}

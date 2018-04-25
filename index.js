@@ -47,7 +47,7 @@ bedrock.events.on('bedrock-express.configure.routes', app => {
   const routes = config['http-bench'].routes;
 
   app.post(routes.post1, (req, res) => {
-    // console.log('LLLLL', req.body);
+    // console.log('LLLLL', Date.now(), req.body);
     res.status(204).end();
   });
 });
