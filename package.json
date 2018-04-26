@@ -22,13 +22,19 @@
   "dependencies": {
     "async": "^2.4.0",
     "bedrock": "^1.2.4",
+    "bedrock-did-client": "^1.1.2",
     "bedrock-docs": "^2.1.0",
     "bedrock-express": "^2.0.6",
+    "bedrock-identity": "^4.6.0",
+    "bedrock-key": "^4.1.0",
     "bedrock-ledger-context": "^1.0.0",
+    "bedrock-mongodb": "^5.1.2",
     "bedrock-passport": "^3.3.0",
     "bedrock-permission": "^2.3.2",
     "bedrock-rest": "^2.1.0",
     "bedrock-server": "^2.2.0",
+    "bedrock-validation": "^3.0.0",
+    "bedrock-views": "^5.4.0",
     "request": "^2.85.0"
   },
   "engines": {

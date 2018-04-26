@@ -6,9 +6,12 @@
 const async = require('async');
 const bedrock = require('bedrock');
 const {config} = bedrock;
+const {ensureAuthenticated} = require('bedrock-passport');
 const request = require('request');
 
 require('bedrock-express');
+require('bedrock-mongodb');
+require('./identities');
 
 require('./config.js');
 
@@ -61,6 +64,11 @@ bedrock.events.on('bedrock-express.configure.routes', app => {
 
   app.post(routes.post1, (req, res) => {
     // console.log('LLLLL', Date.now(), req.rawBody);
+    // console.log('LLLLL', Date.now(), req.body);
+    res.status(204).end();
+  });
+
+  app.post(routes.post2, ensureAuthenticated, (req, res) => {
     // console.log('LLLLL', Date.now(), req.body);
     res.status(204).end();
   });
