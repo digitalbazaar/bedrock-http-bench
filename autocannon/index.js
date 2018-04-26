@@ -77,14 +77,49 @@ const operation = JSON.stringify({
   }
 });
 
+const requests = [];
+// const host = 'bedrock.local:18443';
+const host = 'ip-172-31-23-152.ec2.internal:18443';
+const path = '/post2';
+console.log('Generating operations...');
+for(let i = 0; i < 30000; ++i) {
+  const rsaSign = crypto.createSign('RSA-SHA256');
+  let stringToSign = '';
+  stringToSign += `(request-target): post ${path}\n`;
+  stringToSign += `host: ${host}\n`;
+  const d = jsprim.rfc1123(new Date());
+  stringToSign += `date: ${d}`;
+  rsaSign.update(stringToSign);
+  const signature = rsaSign.sign({
+    key: nodeRsaKeyPair.privateKeyPem,
+    // padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
+    // saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
+  }, 'base64');
+  const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
+    'algorithm="rsa-sha256",' +
+    'headers="(request-target) host date",signature="' + signature + '"';
+  requests.push({
+    url: `https://${host}${path}`,
+    body: operation,
+    headers: {
+      'Authorization': authz,
+      'Content-Type': 'application/json',
+      'Date': d,
+      host
+    }
+  });
+}
+console.log('Done.  Starting to send operations...');
+
 autocannon({
+  url: `https://${host}${path}`,
   // url: 'https://bedrock.local:18443/post1',
   // body: JSON.stringify(operation),
   // headers: {
   //   'Content-Type': 'application/json'
   // },
   // url: 'https://ip-172-31-23-152.ec2.internal:18443/post1',
-  url: 'https://ip-172-31-23-152.ec2.internal:18443/post2',
+  // url: 'https://ip-172-31-23-152.ec2.internal:18443/post2',
   // url: 'http://bedrock.local:18080/post1',
   // url: 'https://bedrock.local:18443/post1',
   // url: 'https://bedrock.local:18443/post2',
@@ -92,7 +127,8 @@ autocannon({
   connections: 20, //default
   pipelining: 1, // default
   duration: 10, // default
-  setupClient
+  requests,
+  // setupClient
 }, console.log);
 
 function setupClient(client) {
