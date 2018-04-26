@@ -35,18 +35,18 @@ bedrock.events.on('bedrock-cli.ready', callback => {
   callback();
 });
 
-function rawBody(req, res, next) {
-  req.setEncoding('utf8');
-  req.rawBody = '';
-  req.on('data', chunk => req.rawBody += chunk);
-  req.on('end', () => next());
-}
-
-bedrock.events.on(
-  'bedrock-express.configure.bodyParser', (server, callback) => {
-    server.use(rawBody);
-    callback(null, false);
-  });
+// function rawBody(req, res, next) {
+//   req.setEncoding('utf8');
+//   req.rawBody = '';
+//   req.on('data', chunk => req.rawBody += chunk);
+//   req.on('end', () => next());
+// }
+//
+// bedrock.events.on(
+//   'bedrock-express.configure.bodyParser', (server, callback) => {
+//     server.use(rawBody);
+//     callback(null, false);
+//   });
 
 // only run application on HTTP port
 // bedrock.events.on('bedrock-express.ready', function(app) {
@@ -61,6 +61,7 @@ bedrock.events.on('bedrock-express.configure.routes', app => {
 
   app.post(routes.post1, (req, res) => {
     // console.log('LLLLL', Date.now(), req.rawBody);
+    console.log('LLLLL', Date.now(), req.body);
     res.status(204).end();
   });
 });
