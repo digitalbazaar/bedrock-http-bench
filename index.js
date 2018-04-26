@@ -61,7 +61,7 @@ bedrock.events.on('bedrock-express.configure.routes', app => {
 
   app.post(routes.post1, (req, res) => {
     // console.log('LLLLL', Date.now(), req.rawBody);
-    console.log('LLLLL', Date.now(), req.body);
+    // console.log('LLLLL', Date.now(), req.body);
     res.status(204).end();
   });
 });
