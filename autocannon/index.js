@@ -82,7 +82,7 @@ const requests = [];
 const host = 'ip-172-31-23-152.ec2.internal:18443';
 const path = '/post2';
 console.log('Generating operations...');
-for(let i = 0; i < 30000; ++i) {
+for(let i = 0; i < 1; ++i) {
   const rsaSign = crypto.createSign('RSA-SHA256');
   let stringToSign = '';
   stringToSign += `(request-target): post ${path}\n`;
@@ -99,7 +99,6 @@ for(let i = 0; i < 30000; ++i) {
     'algorithm="rsa-sha256",' +
     'headers="(request-target) host date",signature="' + signature + '"';
   requests.push({
-    url: `https://${host}${path}`,
     body: operation,
     headers: {
       'Authorization': authz,
@@ -113,6 +112,8 @@ console.log('Done.  Starting to send operations...');
 
 autocannon({
   url: `https://${host}${path}`,
+  body: requests[0].body,
+  headers: requests[0].headers,
   // url: 'https://bedrock.local:18443/post1',
   // body: JSON.stringify(operation),
   // headers: {
