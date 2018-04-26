@@ -44,7 +44,7 @@ autocannon({
   },
   url: 'https://ip-172-31-23-152.ec2.internal:18443/post1',
   // url: 'http://bedrock.local:18080/post1',
-  url: 'https://bedrock.local:18443/post1',
+  // url: 'https://bedrock.local:18443/post1',
   method: 'POST',
   connections: 20, //default
   pipelining: 1, // default
