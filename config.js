@@ -14,6 +14,8 @@ cfg.routes = {
   post2: '/post2',
 };
 
+config.key.cache.enable = true;
+
 // mongodb config
 config.mongodb.name = 'bedrock_http_bench';
 

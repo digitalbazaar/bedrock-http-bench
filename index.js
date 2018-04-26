@@ -10,6 +10,7 @@ const {ensureAuthenticated} = require('bedrock-passport');
 const request = require('request');
 
 require('bedrock-express');
+require('bedrock-key');
 require('bedrock-mongodb');
 require('./identities');
 
