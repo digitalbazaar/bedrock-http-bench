@@ -79,8 +79,9 @@ const operation = JSON.stringify({
 
 const requests = [];
 const host = 'bedrock.local:18443';
+// const host = 'bedrock.local:8080';
 // const host = 'ip-172-31-16-141.ec2.internal:18443';
-const path = '/post1';
+const path = '/post3';
 // const path = '/post2';
 // const path = '/post3';
 console.log('Generating operations...');
@@ -105,22 +106,25 @@ for(let i = 0; i < 1; ++i) {
     headers: {
       'Authorization': authz,
       'Content-Type': 'application/json',
+      // 'Content-Type': 'text/html',
       'Date': d,
-      host
+      // host
     }
   });
 }
+console.log('ZZZZZZZZZ', requests[0].headers);
 console.log('Done.  Starting to send operations...');
 
 autocannon({
+  // url: `https://${host}${path}`,
   url: `https://${host}${path}`,
   body: requests[0].body,
-  // headers: requests[0].headers,
+  headers: requests[0].headers,
   // url: 'https://bedrock.local:18443/post1',
   // body: JSON.stringify(operation),
-  headers: {
-    'Content-Type': 'application/json'
-  },
+  // headers: {
+  //   'Content-Type': 'application/json'
+  // },
   // url: 'https://ip-172-31-23-152.ec2.internal:18443/post1',
   // url: 'https://ip-172-31-23-152.ec2.internal:18443/post2',
   // url: 'http://bedrock.local:18080/post1',
