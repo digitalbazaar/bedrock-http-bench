@@ -4,7 +4,8 @@
   "description": "Bedrock module that provides HTTP endpoints.",
   "main": "index.js",
   "scripts": {
-    "start": "node --preserve-symlinks index.js"
+    "start": "NODE_ENV=production node --preserve-symlinks index.js",
+    "aws": "NODE_ENV=production node --preserve-symlinks index.js --aws"
   },
   "repository": {
     "type": "git",
