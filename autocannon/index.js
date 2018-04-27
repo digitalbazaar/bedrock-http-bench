@@ -79,8 +79,9 @@ const operation = JSON.stringify({
 
 const requests = [];
 // const host = 'bedrock.local:18443';
-const host = 'ip-172-31-23-152.ec2.internal:18443';
-const path = '/post2';
+const host = 'ip-172-31-28-98.ec2.internal:18443';
+// const path = '/post2';
+const path = '/post3';
 console.log('Generating operations...');
 for(let i = 0; i < 1; ++i) {
   const rsaSign = crypto.createSign('RSA-SHA256');
@@ -113,7 +114,7 @@ console.log('Done.  Starting to send operations...');
 autocannon({
   url: `https://${host}${path}`,
   body: requests[0].body,
-  headers: requests[0].headers,
+  // headers: requests[0].headers,
   // url: 'https://bedrock.local:18443/post1',
   // body: JSON.stringify(operation),
   // headers: {
@@ -128,7 +129,7 @@ autocannon({
   connections: 20, //default
   pipelining: 1, // default
   duration: 10, // default
-  requests,
+  // requests,
   // setupClient
 }, console.log);
 

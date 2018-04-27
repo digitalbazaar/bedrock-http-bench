@@ -20,7 +20,7 @@ config.key.cache.enable = true;
 config.mongodb.name = 'bedrock_http_bench';
 
 // core configuration
-config.core.workers = 4;
+config.core.workers = 1;
 
 const identities = cfg.identities = {};
 
