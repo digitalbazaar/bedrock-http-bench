@@ -128,7 +128,7 @@ autocannon({
   method: 'POST',
   connections: 100, //default
   pipelining: 1, // default
-  duration: 10, // default
+  duration: 30, // default
   // requests,
   // setupClient
 }, console.log);
