@@ -14,15 +14,15 @@
   // http = require('http'),
   const os = require('os');
 
-    /*
-     * ClusterServer object
-     *
-     * We start multi-threaded server instances by passing the server object
-     * to ClusterServer.start(server, port).
-     *
-     * Servers are automatically started with a number of threads equivalent
-     * to the number of CPUs reported by the os module.
-     */
+  /*
+   * ClusterServer object
+   *
+   * We start multi-threaded server instances by passing the server object
+   * to ClusterServer.start(server, port).
+   *
+   * Servers are automatically started with a number of threads equivalent
+   * to the number of CPUs reported by the os module.
+   */
   const ClusterServer = {
     name: 'ClusterServer',
 
@@ -30,29 +30,28 @@
 
     autoRestart: true, // Restart threads on death?
 
-    start: function (server, port) {
-        var me = this,
-            i;
+    start: function(server, port) {
+      const me = this;
 
-        if (cluster.isMaster) { // fork worker threads
-            for (i = 0; i < me.cpus; i += 1) {
-                console.log(me.name + ': starting worker thread #' + i);
-                cluster.fork();
-            }
-
-            cluster.on('death', function (worker) {
-                // Log deaths!
-                console.log(me.name + ': worker ' + worker.pid + ' died.');
-                // If autoRestart is true, spin up another to replace it
-                if (me.autoRestart) {
-                    console.log(me.name + ': Restarting worker thread...');
-                    cluster.fork();
-                }
-            });
-        } else {
-            // Worker threads run the server
-            server.listen(port);
+      if(cluster.isMaster) { // fork worker threads
+        for(let i = 0; i < me.cpus; i += 1) {
+          console.log(me.name + ': starting worker thread #' + i);
+          cluster.fork();
         }
+
+        cluster.on('death', function(worker) {
+          // Log deaths!
+          console.log(me.name + ': worker ' + worker.pid + ' died.');
+          // If autoRestart is true, spin up another to replace it
+          if(me.autoRestart) {
+            console.log(me.name + ': Restarting worker thread...');
+            cluster.fork();
+          }
+        });
+      } else {
+        // Worker threads run the server
+        server.listen(port);
+      }
     }
   };
 
