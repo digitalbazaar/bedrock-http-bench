@@ -118,9 +118,9 @@ autocannon({
   // headers: requests[0].headers,
   // url: 'https://bedrock.local:18443/post1',
   // body: JSON.stringify(operation),
-  // headers: {
-  //   'Content-Type': 'application/json'
-  // },
+  headers: {
+    'Content-Type': 'application/json'
+  },
   // url: 'https://ip-172-31-23-152.ec2.internal:18443/post1',
   // url: 'https://ip-172-31-23-152.ec2.internal:18443/post2',
   // url: 'http://bedrock.local:18080/post1',
