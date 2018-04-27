@@ -126,7 +126,7 @@ autocannon({
   // url: 'https://bedrock.local:18443/post1',
   // url: 'https://bedrock.local:18443/post2',
   method: 'POST',
-  connections: 100, //default
+  connections: 20, //default
   pipelining: 1, // default
   duration: 60, // default
   // requests,
