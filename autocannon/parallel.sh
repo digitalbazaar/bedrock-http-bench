@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-parallel ::: 'node index.js' 'node index.js' 'node index.js' 'node index.js'
+export NODE_ENV=production
+parallel ::: 'NODE_ENV=production node index.js' 'NODE_ENV=production node index.js' 'NODE_ENV=production node index.js' 'NODE_ENV=production node index.js'
