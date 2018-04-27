@@ -93,10 +93,18 @@ for(let i = 0; i < 1; ++i) {
   const d = jsprim.rfc1123(new Date());
   stringToSign += `date: ${d}`;
   rsaSign.update(stringToSign);
+  const md = crypto.createHash('sha256');
+  md.update(stringToSign, 'utf8');
+  // console.log('HHHHHHHHHH', md.digest('hex'));
   const signature = rsaSign.sign({
     key: nodeRsaKeyPair.privateKeyPem,
+    // GoLang uses two different functions for PSS padding vs no
+    // according to this, regular v1.5 is OK for signing
+    // https://crypto.stackexchange.com/a/40021
+
     // padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
     // saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
+
   }, 'base64');
   const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
     'algorithm="rsa-sha256",' +
@@ -112,7 +120,6 @@ for(let i = 0; i < 1; ++i) {
     }
   });
 }
-console.log('ZZZZZZZZZ', requests[0].headers);
 console.log('Done.  Starting to send operations...');
 
 autocannon({
@@ -150,8 +157,8 @@ function setupClient(client) {
   rsaSign.update(stringToSign);
   const signature = rsaSign.sign({
     key: nodeRsaKeyPair.privateKeyPem,
-    // padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
-    // saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
+    padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
+    saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
   }, 'base64');
   // console.log('SSSSSS', signature);
   const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
