@@ -78,8 +78,8 @@ const operation = JSON.stringify({
 });
 
 const requests = [];
-// const host = 'bedrock.local:18443';
-const host = 'ip-172-31-28-98.ec2.internal:18443';
+const host = 'bedrock.local:18443';
+// const host = 'ip-172-31-28-98.ec2.internal:18443';
 const path = '/post1';
 // const path = '/post2';
 // const path = '/post3';
@@ -129,7 +129,7 @@ autocannon({
   method: 'POST',
   connections: 75, //default
   pipelining: 1, // default
-  duration: 60, // default
+  duration: 10, // default
   // requests,
   // setupClient
 }, console.log);
