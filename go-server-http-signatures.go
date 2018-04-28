@@ -49,30 +49,6 @@ func use(h http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFu
   return h
 }
 
-func logger(h http.HandlerFunc) http.HandlerFunc {
-  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    log.Println("Before")
-    h.ServeHTTP(w, r) // call original
-    log.Println("After")
-  })
-}
-
-// type MyHandler struct{}
-//
-// func (h *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-//   if r.Method == "POST" {
-//     var results []string
-//     body, err := ioutil.ReadAll(r.Body)
-//     if err != nil {
-//       http.Error(w, "Error reading request body",
-//         http.StatusInternalServerError)
-//     }
-//     results = append(results, string(body))
-//   } else {
-//     http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-//   }
-// }
-
 func handler(w http.ResponseWriter, r *http.Request) {
   if r.Method == "POST" {
     var results []string
@@ -105,11 +81,9 @@ func main() {
 
     wrapped := httpsig.RequireSignature(http.HandlerFunc(handler), v, "")
 
-    // `handleFunc` allows use of regular function
-    // http.HandleFunc("/post3", use(handler, httpsig))
     http.Handle("/post3", wrapped)
+    // `handleFunc` allows use of regular function
     // http.HandleFunc("/post3", handler)
-    // http.HandleFunc("/post3", wrapped)
     // log.Fatal(http.ListenAndServe(":8080", nil))
     log.Fatal(http.ListenAndServeTLS(
       ":18443", "basic-server.crt", "basic-server.key", nil))
