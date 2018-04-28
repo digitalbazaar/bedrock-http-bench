@@ -64,27 +64,27 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    block, _ := pem.Decode([]byte(privKey))
-    if block == nil {
-      log.Println("test setup failure: malformed PEM on private key")
-      // tb.Fatalf("test setup failure: malformed PEM on private key")
-    }
-    key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-    if err != nil {
-      log.Println(err)
-      // tb.Fatal(err)
-    }
-    keystore := httpsig.NewMemoryKeyStore()
-    keystore.SetKey("did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1", key)
-    var v = httpsig.NewVerifier(keystore)
-    v.SetRequiredHeaders([]string{"(request-target)", "host", "date"})
+  block, _ := pem.Decode([]byte(privKey))
+  if block == nil {
+    log.Println("test setup failure: malformed PEM on private key")
+    // tb.Fatalf("test setup failure: malformed PEM on private key")
+  }
+  key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+  if err != nil {
+    log.Println(err)
+    // tb.Fatal(err)
+  }
+  keystore := httpsig.NewMemoryKeyStore()
+  keystore.SetKey("did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1", key)
+  var v = httpsig.NewVerifier(keystore)
+  v.SetRequiredHeaders([]string{"(request-target)", "host", "date"})
 
-    wrapped := httpsig.RequireSignature(http.HandlerFunc(handler), v, "")
+  wrapped := httpsig.RequireSignature(http.HandlerFunc(handler), v, "")
 
-    http.Handle("/post3", wrapped)
-    // `handleFunc` allows use of regular function
-    // http.HandleFunc("/post3", handler)
-    // log.Fatal(http.ListenAndServe(":8080", nil))
-    log.Fatal(http.ListenAndServeTLS(
-      ":18443", "basic-server.crt", "basic-server.key", nil))
+  http.Handle("/post3", wrapped)
+  // `handleFunc` allows use of regular function
+  // http.HandleFunc("/post3", handler)
+  // log.Fatal(http.ListenAndServe(":8080", nil))
+  log.Fatal(http.ListenAndServeTLS(
+    ":18443", "basic-server.crt", "basic-server.key", nil))
 }
