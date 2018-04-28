@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "crypto/rsa"
-	"crypto/x509"
+  // "crypto/rsa"
+  "crypto/x509"
   "encoding/pem"
   "io/ioutil"
   // "fmt"
@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	privKey = `-----BEGIN RSA PRIVATE KEY-----
+  privKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEpQIBAAKCAQEArpPmWDG3MCn3simEGNIeseNe3epn81gLnWXjup458yXgjUYF
 qKcFlsV5oW4vSF5EEQfPqWB+E5NWYfE9IioQmmQjh28BhMXHq94HgQ90nKQ3KTpA
 MOXNefvcun+qqOyr4Jf8y8esiYHjuitZA03o9OhzpqJwFzQj7Nxx2dg/3LnkcsP1
@@ -42,11 +42,11 @@ JCxLDG7o3iSqT+DNbYnDI7aUCuM6Guji98q3IvBnW5hj+jbmo4sfRDQ=
 )
 
 func use(h http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) http.HandlerFunc {
-	for _, m := range middleware {
-		h = m(h)
-	}
+  for _, m := range middleware {
+    h = m(h)
+  }
 
-	return h
+  return h
 }
 
 func logger(h http.HandlerFunc) http.HandlerFunc {
@@ -60,46 +60,46 @@ func logger(h http.HandlerFunc) http.HandlerFunc {
 // type MyHandler struct{}
 //
 // func (h *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method == "POST" {
+//   if r.Method == "POST" {
 //     var results []string
-// 		body, err := ioutil.ReadAll(r.Body)
-// 		if err != nil {
-// 			http.Error(w, "Error reading request body",
-// 				http.StatusInternalServerError)
-// 		}
-// 		results = append(results, string(body))
-// 	} else {
-// 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-// 	}
+//     body, err := ioutil.ReadAll(r.Body)
+//     if err != nil {
+//       http.Error(w, "Error reading request body",
+//         http.StatusInternalServerError)
+//     }
+//     results = append(results, string(body))
+//   } else {
+//     http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+//   }
 // }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
+  if r.Method == "POST" {
     var results []string
-		body, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Error reading request body",
-				http.StatusInternalServerError)
-		}
-		results = append(results, string(body))
-	} else {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-	}
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+      http.Error(w, "Error reading request body",
+        http.StatusInternalServerError)
+    }
+    results = append(results, string(body))
+  } else {
+    http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+  }
 }
 
 func main() {
-  	block, _ := pem.Decode([]byte(privKey))
-  	if block == nil {
+    block, _ := pem.Decode([]byte(privKey))
+    if block == nil {
       log.Println("test setup failure: malformed PEM on private key")
-  		// tb.Fatalf("test setup failure: malformed PEM on private key")
-  	}
-  	key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-  	if err != nil {
+      // tb.Fatalf("test setup failure: malformed PEM on private key")
+    }
+    key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+    if err != nil {
       log.Println(err)
-  		// tb.Fatal(err)
-  	}
+      // tb.Fatal(err)
+    }
     keystore := httpsig.NewMemoryKeyStore()
-  	keystore.SetKey("did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1", key)
+    keystore.SetKey("did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1", key)
     var v = httpsig.NewVerifier(keystore)
     v.SetRequiredHeaders([]string{"(request-target)", "host", "date"})
 
