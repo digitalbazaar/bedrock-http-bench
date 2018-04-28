@@ -112,5 +112,5 @@ func main() {
     // http.HandleFunc("/post3", wrapped)
     // log.Fatal(http.ListenAndServe(":8080", nil))
     log.Fatal(http.ListenAndServeTLS(
-      "bedrock.local:18443", "basic-server.crt", "basic-server.key", nil))
+      ":18443", "basic-server.crt", "basic-server.key", nil))
 }
