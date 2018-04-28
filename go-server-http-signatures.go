@@ -9,6 +9,8 @@ import (
   "log"
   "net/http"
   "github.com/spacemonkeygo/httpsig"
+  "golang.org/x/crypto/ed25519"
+	"encoding/base64"
 )
 
 var (
@@ -41,6 +43,10 @@ JCxLDG7o3iSqT+DNbYnDI7aUCuM6Guji98q3IvBnW5hj+jbmo4sfRDQ=
 -----END RSA PRIVATE KEY-----`
 )
 
+// using base64 encoding for convenience, there is no standard base58 encoder
+var ed25519_publicKey_base64 = "tr+DxzybcWZh/aS79+Mm95Zg/P7jAu4nSyVSTdbUCf0="
+var ed25519_privateKey_base64 = "ny2yPFWxk1n1scEO96J7nmjzuoyCnpLcWU+6wHsfyGi2v4PHPJtxZmH9pLv34yb3lmD8/uMC7idLJVJN1tQJ/Q=="
+
 func use(h http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) http.HandlerFunc {
   for _, m := range middleware {
     h = m(h)
@@ -64,6 +70,20 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+  // publicKey, privateKey, err := ed25519.GenerateKey(nil)
+  // if err != nil {
+  //   log.Println(err)
+  // }
+  // log.Println("pppppppp0", base64.StdEncoding.EncodeToString(publicKey))
+  // log.Println("pppppppp1", base64.StdEncoding.EncodeToString(privateKey))
+
+  tKey, err := base64.StdEncoding.DecodeString(ed25519_publicKey_base64)
+  if err != nil {
+    log.Println(err)
+    // tb.Fatal(err)
+  }
+  var publicKeyEdDsa ed25519.PublicKey = tKey
+
   block, _ := pem.Decode([]byte(privKey))
   if block == nil {
     log.Println("test setup failure: malformed PEM on private key")
@@ -74,8 +94,12 @@ func main() {
     log.Println(err)
     // tb.Fatal(err)
   }
+
   keystore := httpsig.NewMemoryKeyStore()
   keystore.SetKey("did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1", key)
+  // passing in pointer
+  keystore.SetKey("did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1", &publicKeyEdDsa)
+
   var v = httpsig.NewVerifier(keystore)
   v.SetRequiredHeaders([]string{"(request-target)", "host", "date"})
 

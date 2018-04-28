@@ -4,8 +4,17 @@
 'use strict';
 
 const autocannon = require('autocannon');
+const chloride = require('chloride');
 const crypto = require('crypto');
 const jsprim = require('jsprim');
+
+const ed25519KeyPair = {
+  publicKey: Buffer.from(
+    'tr+DxzybcWZh/aS79+Mm95Zg/P7jAu4nSyVSTdbUCf0=', 'base64'),
+  privateKey: Buffer.from(
+    'ny2yPFWxk1n1scEO96J7nmjzuoyCnpLcWU+6wHsfyGi2v4PHPJtxZmH9pLv34yb3lmD8/' +
+    'uMC7idLJVJN1tQJ/Q==', 'base64')
+};
 
 const nodeRsaKeyPair = {
   publicKeyPem: '-----BEGIN PUBLIC KEY-----\n' +
@@ -78,24 +87,36 @@ const operation = JSON.stringify({
 });
 
 const requests = [];
-// const host = 'bedrock.local:18443';
+const host = 'bedrock.local:18443';
 // const host = 'bedrock.local:8080';
-const host = 'ip-172-31-18-222.ec2.internal:18443';
+// const host = 'ip-172-31-18-222.ec2.internal:18443';
 const path = '/post3';
 // const path = '/post2';
-// const path = '/post3';
 console.log('Generating operations...');
 for(let i = 0; i < 1; ++i) {
-  const rsaSign = crypto.createSign('RSA-SHA256');
   let stringToSign = '';
   stringToSign += `(request-target): post ${path}\n`;
   stringToSign += `host: ${host}\n`;
   const d = jsprim.rfc1123(new Date());
   stringToSign += `date: ${d}`;
+
+  const myBuffer = Buffer.from(stringToSign, 'utf8');
+  const signature = chloride.crypto_sign_detached(
+    myBuffer, ed25519KeyPair.privateKey).toString('base64');
+  const authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
+    'algorithm="eddsa-sha512",' +
+    'headers="(request-target) host date",signature="' + signature + '"';
+
+  /*
+  // rsa signature
+  const rsaSign = crypto.createSign('RSA-SHA256');
   rsaSign.update(stringToSign);
-  const md = crypto.createHash('sha256');
-  md.update(stringToSign, 'utf8');
+
+  // creating hash for testing
+  // const md = crypto.createHash('sha256');
+  // md.update(stringToSign, 'utf8');
   // console.log('HHHHHHHHHH', md.digest('hex'));
+
   const signature = rsaSign.sign({
     key: nodeRsaKeyPair.privateKeyPem,
     // GoLang uses two different functions for PSS padding vs no
@@ -109,6 +130,7 @@ for(let i = 0; i < 1; ++i) {
   const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
     'algorithm="rsa-sha256",' +
     'headers="(request-target) host date",signature="' + signature + '"';
+  */
   requests.push({
     body: operation,
     headers: {
@@ -140,7 +162,7 @@ autocannon({
   method: 'POST',
   connections: 10, //default
   pipelining: 1, // default
-  duration: 30, // default
+  duration: 10, // default
   // requests,
   // setupClient
 }, console.log);
