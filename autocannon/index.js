@@ -100,14 +100,13 @@ for(let i = 0; i < 1; ++i) {
   const d = jsprim.rfc1123(new Date());
   stringToSign += `date: ${d}`;
 
-  const myBuffer = Buffer.from(stringToSign, 'utf8');
-  const signature = chloride.crypto_sign_detached(
-    myBuffer, ed25519KeyPair.privateKey).toString('base64');
-  const authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
-    'algorithm="eddsa-sha512",' +
-    'headers="(request-target) host date",signature="' + signature + '"';
+  // const myBuffer = Buffer.from(stringToSign, 'utf8');
+  // const signature = chloride.crypto_sign_detached(
+  //   myBuffer, ed25519KeyPair.privateKey).toString('base64');
+  // const authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
+  //   'algorithm="eddsa-sha512",' +
+  //   'headers="(request-target) host date",signature="' + signature + '"';
 
-  /*
   // rsa signature
   const rsaSign = crypto.createSign('RSA-SHA256');
   rsaSign.update(stringToSign);
@@ -130,7 +129,7 @@ for(let i = 0; i < 1; ++i) {
   const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
     'algorithm="rsa-sha256",' +
     'headers="(request-target) host date",signature="' + signature + '"';
-  */
+
   requests.push({
     body: operation,
     headers: {
