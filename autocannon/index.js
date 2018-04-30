@@ -95,6 +95,7 @@ const path = '/post3';
 
 // set signature type
 const sigType = 'eddsa';
+let authz = '';
 
 console.log('Generating operations...');
 for(let i = 0; i < 1; ++i) {
@@ -108,7 +109,7 @@ for(let i = 0; i < 1; ++i) {
     const myBuffer = Buffer.from(stringToSign, 'utf8');
     const signature = chloride.crypto_sign_detached(
       myBuffer, ed25519KeyPair.privateKey).toString('base64');
-      const authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
+      authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
       'algorithm="eddsa-sha512",' +
       'headers="(request-target) host date",signature="' + signature + '"';
   }
@@ -132,7 +133,7 @@ for(let i = 0; i < 1; ++i) {
       // saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
 
     }, 'base64');
-    const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
+    authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
       'algorithm="rsa-sha256",' +
       'headers="(request-target) host date",signature="' + signature + '"';
   }
