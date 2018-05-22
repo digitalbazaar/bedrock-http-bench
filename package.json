@@ -30,7 +30,7 @@
     "bedrock-key": "^4.1.0",
     "bedrock-ledger-context": "^1.0.0",
     "bedrock-mongodb": "^5.1.2",
-    "bedrock-passport": "^3.3.0",
+    "bedrock-passport": "digitalbazaar/bedrock-passport#master",
     "bedrock-permission": "^2.3.2",
     "bedrock-rest": "^2.1.0",
     "bedrock-server": "^2.2.0",

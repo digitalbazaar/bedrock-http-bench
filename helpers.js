@@ -34,7 +34,7 @@ api.createKeyPair = function(options) {
     publicKey: {
       '@context': 'https://w3id.org/identity/v1',
       id: ownerId + '/keys/1',
-      type: 'CryptographicKey',
+      type: ['CryptographicKey', 'RsaVerificationKey2018'],
       owner: ownerId,
       label: 'Signing Key 1',
       publicKeyPem: publicKey
