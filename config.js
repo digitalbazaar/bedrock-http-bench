@@ -24,10 +24,10 @@ config.core.workers = 4;
 
 const identities = cfg.identities = {};
 
-// identity with permission to add public keys
-const userName = 'regularUser';
+let userName = 'regularUserRsa';
+let id = `did:9090cb90-8394-414c-ae12-ba25e2137332`;
 identities[userName] = {};
-identities[userName].identity = helpers.createIdentity(userName);
+identities[userName].identity = helpers.createIdentity({id, userName});
 // identities[userName].identity.sysResourceRole.push({
 //   sysRole: 'bedrock-ledger-test.test',
 //   generateResource: 'id'
@@ -35,7 +35,7 @@ identities[userName].identity = helpers.createIdentity(userName);
 identities[userName].keys = helpers.createKeyPair({
   userName: userName,
   userId: identities[userName].identity.id,
-  publicKey: '-----BEGIN PUBLIC KEY-----\n' +
+  publicKeyPem: '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArpPmWDG3MCn3simEGNIe\n' +
     'seNe3epn81gLnWXjup458yXgjUYFqKcFlsV5oW4vSF5EEQfPqWB+E5NWYfE9IioQ\n' +
     'mmQjh28BhMXHq94HgQ90nKQ3KTpAMOXNefvcun+qqOyr4Jf8y8esiYHjuitZA03o\n' +
@@ -44,7 +44,7 @@ identities[userName].keys = helpers.createKeyPair({
     '8xqsqrvR3ICdYIevjFknMHX1LZB5R6nfosG90pWVA2m5LqnAoEMBnG/CUpvxPRYy\n' +
     'jwIDAQAB\n' +
     '-----END PUBLIC KEY-----\n',
-  privateKey: '-----BEGIN RSA PRIVATE KEY-----\n' +
+  privateKeyPem: '-----BEGIN RSA PRIVATE KEY-----\n' +
     'MIIEpQIBAAKCAQEArpPmWDG3MCn3simEGNIeseNe3epn81gLnWXjup458yXgjUYF\n' +
     'qKcFlsV5oW4vSF5EEQfPqWB+E5NWYfE9IioQmmQjh28BhMXHq94HgQ90nKQ3KTpA\n' +
     'MOXNefvcun+qqOyr4Jf8y8esiYHjuitZA03o9OhzpqJwFzQj7Nxx2dg/3LnkcsP1\n' +
@@ -71,4 +71,20 @@ identities[userName].keys = helpers.createKeyPair({
     '6LtOFUE7nFVEqFMN2IhW59qb2eCg7XpeEQic4aqNkc8WtuMEavHRTucsEWk+ypZv\n' +
     'JCxLDG7o3iSqT+DNbYnDI7aUCuM6Guji98q3IvBnW5hj+jbmo4sfRDQ=\n' +
     '-----END RSA PRIVATE KEY-----\n'
+});
+
+userName = 'regularUserEd25519';
+id = `did:b7514d3b-388c-42f1-a47b-96e2c1f7135b`;
+identities[userName] = {};
+identities[userName].identity = helpers.createIdentity({id, userName});
+// identities[userName].identity.sysResourceRole.push({
+//   sysRole: 'bedrock-ledger-test.test',
+//   generateResource: 'id'
+// });
+identities[userName].keys = helpers.createKeyPair({
+  userName: userName,
+  userId: identities[userName].identity.id,
+  publicKeyBase58: 'BveYC5JaPU5zjNhqDHfVq1QRibbzAznNLfUigAibapXj',
+  privateKeyBase58: '3ztCNwkbzLXyAdtzz9RCEARixHmv8kLZS7Y1wrCw3byLGpUEPZ3' +
+    'bbYoUFsTMUv3wZH6f6eTUdp8YioDNjtBZtuqK'
 });

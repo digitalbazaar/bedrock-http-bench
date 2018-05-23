@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "autocannon": "^2.2.0",
+    "bs58": "^4.0.1",
     "chloride": "digitalbazaar/chloride#genericHash",
     "jsprim": "^2.0.0"
   },

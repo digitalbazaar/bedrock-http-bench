@@ -4,16 +4,18 @@
 'use strict';
 
 const autocannon = require('autocannon');
+const bs58 = require('bs58');
 const chloride = require('chloride');
 const crypto = require('crypto');
 const jsprim = require('jsprim');
 
 const ed25519KeyPair = {
-  publicKey: Buffer.from(
-    'tr+DxzybcWZh/aS79+Mm95Zg/P7jAu4nSyVSTdbUCf0=', 'base64'),
-  privateKey: Buffer.from(
-    'ny2yPFWxk1n1scEO96J7nmjzuoyCnpLcWU+6wHsfyGi2v4PHPJtxZmH9pLv34yb3lmD8/' +
-    'uMC7idLJVJN1tQJ/Q==', 'base64')
+  publicKey: Buffer.from(bs58.decode(
+    'BveYC5JaPU5zjNhqDHfVq1QRibbzAznNLfUigAibapXj')),
+  privateKey: Buffer.from(bs58.decode(
+    '3ztCNwkbzLXyAdtzz9RCEARixHmv8kLZS7Y1wrCw3byLGpUEPZ3' +
+    'bbYoUFsTMUv3wZH6f6eTUdp8YioDNjtBZtuqK'
+  ))
 };
 
 const nodeRsaKeyPair = {
@@ -94,8 +96,8 @@ const host = 'bedrock.local:18443';
 const path = '/post2';
 
 // set signature type
-// const sigType = 'eddsa';
-const sigType = 'rsa';
+const sigType = 'eddsa';
+// const sigType = 'rsa';
 let authz = '';
 
 console.log('Generating operations...');
@@ -110,7 +112,7 @@ for(let i = 0; i < 1; ++i) {
     const myBuffer = Buffer.from(stringToSign, 'utf8');
     const signature = chloride.crypto_sign_detached(
       myBuffer, ed25519KeyPair.privateKey).toString('base64');
-      authz = 'Signature keyId="did:ed31e31a-e32c-4cb6-a5d3-4c5deaffc2be/keys/1",' +
+      authz = 'Signature keyId="did:b7514d3b-388c-42f1-a47b-96e2c1f7135b/keys/1",' +
       'algorithm="eddsa-sha512",' +
       'headers="(request-target) host date",signature="' + signature + '"';
   }
@@ -134,7 +136,7 @@ for(let i = 0; i < 1; ++i) {
       // saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
 
     }, 'base64');
-    authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
+    authz = 'Signature keyId="did:9090cb90-8394-414c-ae12-ba25e2137332/keys/1",' +
       'algorithm="rsa-sha256",' +
       'headers="(request-target) host date",signature="' + signature + '"';
   }
@@ -191,7 +193,8 @@ function setupClient(client) {
     saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
   }, 'base64');
   // console.log('SSSSSS', signature);
-  const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
+  const authz = 'Signature keyId="did:9090cb90-8394-414c-ae12-ba25e2137332/keys/1",' +
+  // const authz = 'Signature keyId="did:7e4a0145-c821-4e56-b41e-2e73e1b0615f/keys/1",' +
     'algorithm="rsa-sha256",' +
     'headers="(request-target) host date",signature="' + signature + '"';
   client.setHeadersAndBody({
