@@ -89,9 +89,9 @@ const operation = JSON.stringify({
 });
 
 const requests = [];
-const host = 'bedrock.local:18443';
+// const host = 'bedrock.local:18443';
 // const host = 'bedrock.local:8080';
-// const host = 'ip-172-31-25-11.ec2.internal:18443';
+const host = 'ip-172-31-21-217.ec2.internal:18443';
 // const path = '/post3';
 const path = '/post2';
 
